@@ -7,3 +7,4 @@ scikit-learn
 apache-airflow
 kafka-python
 numpy
+jupyter
