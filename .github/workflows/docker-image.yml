@@ -15,5 +15,8 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-                    bash /docker-test/Perceptron/deploy.sh
+                    git clone https://github.com/mimireyburn/Perceptron.git
+                    cd Perceptron
+                    bash deploy.sh
+                    
 
