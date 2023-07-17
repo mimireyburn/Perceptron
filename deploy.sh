@@ -13,7 +13,7 @@ git pull
 docker build -t fastapi .
 
 # Run a new container with the updated image
-docker run -d -p 8081:8081 --name docker-container fastapi
+docker run -dp 8080:8080 --name docker-container fastapi
 
 # Clean up unused Docker images and containers
 docker system prune -af
