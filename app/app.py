@@ -21,18 +21,18 @@ async def read_root(request: Request):
     }
 
     
-    # if userid is None or session is None:
-    #     raise HTTPException(status_code=400, detail="Missing user or session in headers")
+    if userid is None or session is None:
+        raise HTTPException(status_code=400, detail="Missing user or session in headers")
 
-    # r = redis.Redis(host='cache', port=6380, decode_responses=True)
-    # r.set(f"user:{session}", userid)
-    # r.set(f"session:{session}", session)
-    # r.hset(f'user-session:{session}', mapping={
-    #     'name': 'John',
-    #     "surname": 'Smith',
-    #     "company": 'Redis',
-    #     "age": 29
-    # })
+    r = redis.Redis(host='cache', port=6380, decode_responses=True)
+    r.set(f"user:{session}", userid)
+    r.set(f"session:{session}", session)
+    r.hset(f'user-session:{session}', mapping={
+        'name': 'John',
+        "surname": 'Smith',
+        "company": 'Redis',
+        "age": 29
+    })
     def item_returner(connection_info, userid):
         conn = psycopg2.connect(**connection_info)
         cur = conn.cursor()
@@ -51,10 +51,10 @@ async def read_root(request: Request):
         return item_keys
     item = item_returner(connection_info, userid)
 
-    # user_data = r.hgetall(f'user-session:{session}')
+    user_data = r.hgetall(f'user-session:{session}')
 
-    # return {"item": item, "user_data": user_data}
-    return {"item": item,}
+    return {"item": item, "user_data": user_data}
+    # return {"item": item,}
 
 @app.post('/evt')
 def read_event(request: Request):
