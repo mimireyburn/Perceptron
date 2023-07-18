@@ -1,10 +1,2 @@
 fastapi
-uvicorn 
-torch
-matplotlib
-pandas
-scikit-learn
-apache-airflow
-kafka-python
-numpy
-jupyter
+uvicorn
