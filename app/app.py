@@ -19,8 +19,8 @@ async def read_root(request: Request):
     "port": 5433  # or any port you have configured
     }
     
-    # if userid is None or session is None:
-    #     raise HTTPException(status_code=400, detail="Missing user or session in headers")
+    if userid is None or session is None:
+        raise HTTPException(status_code=400, detail="Missing user or session in headers")
 
     r = redis.Redis(host='cache', port=6380, decode_responses=True)
     r.set(f"user:{session}", userid)
@@ -53,8 +53,8 @@ async def read_root(request: Request):
 
     user_data = r.hgetall(f'user-session:{session}')
 
-    return {"item": item, "user_data": user_data}
-    # return {"item": item,}
+    # return {"item": item, "user_data": user_data}
+    return {"item": item,}
 
 @app.post('/evt')
 def read_event(request: Request):
