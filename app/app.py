@@ -1,10 +1,9 @@
 from fastapi import FastAPI, Request, HTTPException
 import redis
-import psycopg2
+import pg8000
 import json
 
 app = FastAPI()
-
 
 @app.get('/')
 async def read_root(request: Request):
@@ -13,13 +12,12 @@ async def read_root(request: Request):
     session = headers.get('session')
 
     connection_info = {
-    "dbname": "postgres",
+    "database": "postgres",
     "user": "postgres",
     "password": "Perceptron",
     "host": "localhost",
     "port": 5433  # or any port you have configured
     }
-
     
     if userid is None or session is None:
         raise HTTPException(status_code=400, detail="Missing user or session in headers")
@@ -33,8 +31,9 @@ async def read_root(request: Request):
         "company": 'Redis',
         "age": 29
     })
+    
     def item_returner(connection_info, userid):
-        conn = psycopg2.connect(**connection_info)
+        conn = pg8000.connect(**connection_info)
         cur = conn.cursor()
 
         cur.execute(
@@ -49,6 +48,7 @@ async def read_root(request: Request):
         conn.close()
 
         return item_keys
+
     item = item_returner(connection_info, userid)
 
     user_data = r.hgetall(f'user-session:{session}')
@@ -63,6 +63,3 @@ def read_event(request: Request):
         print(f"{key}:{value}")
     
     return 'Hello from event route'
-
-
-
