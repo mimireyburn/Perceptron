@@ -1,9 +1,11 @@
 version: '3.8'
 services: 
   app: 
-      build: ./app
-      ports: 
-        - 8080:8080
+    build: ./app
+    ports: 
+      - 8080:8080
+    depends_on:
+      - kafka
   cache:
     image: redis:6.2-alpine
     restart: always
@@ -12,17 +14,31 @@ services:
     volumes:
       - cache:/data
   db:
-      image: postgres:14.1-alpine
-      restart: always
-      environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgres
-      ports:
-        - '5438:5432'
-      volumes: 
-        - db:/var/lib/postgresql/data
-        # # copy the sql script to create tables
-        # - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5438:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+      # # copy the sql script to create tables
+      # - ./sql/create_tables.sql:/docker-entrypoint-
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    restart: always
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    depends_on:
+      - zookeeper
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    restart: always
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
 volumes:
   cache:
     driver: local
