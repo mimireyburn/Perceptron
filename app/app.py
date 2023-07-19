@@ -1,9 +1,13 @@
 from fastapi import FastAPI, Request, HTTPException
 import redis
+import random
 import pg8000
 import json
 
 app = FastAPI()
+
+r = redis.Redis(host='cache', port=6379, decode_responses=True)
+r.zadd('recommendations:user:1', {'ee34f214-bea6-4cde-bb46-cf5db7eb05a8': 0.8, '6e7175d0-1abd-496f-a138-d447b220b8b6': 0.7, '43a2a257-dd0c-4a6a-8b2b-457b443eb1cb': 0.6}, {'9f60e2f8-7f11-4732-a69a-03d2ea6e2950', 0.4})
 
 @app.get('/')
 async def read_root(request: Request):
@@ -11,11 +15,13 @@ async def read_root(request: Request):
     userid = headers.get('user')
     session = headers.get('session')
 
-    r = redis.Redis(host='cache', port=6379, decode_responses=True)
-    r.set(f"user:{session}", userid)
-    r.set(f"session:{session}", session)
+    r.set(f"user:{userid}", session)
 
-    return 'ee34f214-bea6-4cde-bb46-cf5db7eb05a8'
+    user_recommendations = r.zrange('recommendations:user:1', 0, -1, withscores=True)
+
+    selected_item, score = random.choice(user_recommendations)
+    
+    return selected_item
 
 @app.post('/evt')
 def read_event(request: Request):
