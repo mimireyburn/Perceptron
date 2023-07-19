@@ -106,7 +106,7 @@ def insert_items_data(connection_info):
 connection_info = {
     "dbname": "postgres",
     "user": "postgres",
-    "password": "Perceptron",
+    "password": "postgres",
     "host": "localhost",
     "port": 5433  # or any port you have configured
 }
