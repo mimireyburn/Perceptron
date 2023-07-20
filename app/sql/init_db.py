@@ -3,11 +3,11 @@ import json
 from datetime import datetime
 
 connection_info = {
-    "database": "tinyWorld",
-    "user": "root",
-    "password": "postgres",
-    "host": "localhost",
-    "port": 5433  # or any port you have configured
+    "dbname": os.environ.get("POSTGRES_DB"),
+    "user": os.environ.get("POSTGRES_USER"),
+    "password": os.environ.get("POSTGRES_PASSWORD"),
+    "host": os.environ.get("POSTGRES_HOST"),
+    "port": os.environ.get("POSTGRES_PORT")
 }
 
 print("hi")

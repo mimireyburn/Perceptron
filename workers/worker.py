@@ -1,6 +1,16 @@
 from confluent_kafka import Consumer, KafkaException
 import psycopg2
 import json
+import os 
+
+# Database connection parameters
+connection_info = {
+    "dbname": os.environ.get("POSTGRES_DB"),
+    "user": os.environ.get("POSTGRES_USER"),
+    "password": os.environ.get("POSTGRES_PASSWORD"),
+    "host": os.environ.get("POSTGRES_HOST"),
+    "port": os.environ.get("POSTGRES_PORT")
+}
 
 # Set up a Kafka consumer
 c = Consumer({
@@ -12,14 +22,6 @@ c = Consumer({
 # Subscribe to the Kafka topic
 c.subscribe(['mytopic_sessionrecorder'])
 
-# Database connection parameters
-connection_info = {
-    "dbname": "postgres",
-    "user": "postgres",
-    "password": "postgres",
-    "host": "db",
-    "port": 5432
-}
 
 while True:
     try:
