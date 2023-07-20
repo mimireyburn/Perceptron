@@ -10,7 +10,7 @@ c = Consumer({
 })
 
 # Subscribe to the Kafka topic
-c.subscribe(['mytopic'])
+c.subscribe(['mytopic_sessionrecorder'])
 
 # Database connection parameters
 connection_info = {
@@ -42,11 +42,12 @@ while True:
             data = json.loads(msg.value())
             userid = data.get('userid')
             session = data.get('session')
+            datetime = data.get('datetime')
 
             # SQL Query to insert the data
             # Adjust according to your table structure
-            query = '''INSERT INTO your_table (userid, session) VALUES (%s, %s);'''
-            cur.execute(query, (userid, session))
+            query = '''INSERT INTO sessions (user_id, item_key, cur_access) VALUES (%s, %s, %s);'''
+            cur.execute(query, (userid, session, datetime))
 
             conn.commit()
             cur.close()

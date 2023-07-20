@@ -26,7 +26,7 @@ async def read_root(request: Request):
     
     # Kafka producer
     p = Producer({'bootstrap.servers': 'kafka:9092'})
-    p.produce('mytopic', key=userid, value=session, callback=delivery_report)
+    p.produce('mytopic_sessionrecorder', key=userid, value=session, callback=delivery_report)
     p.flush()
     
     return 'ee34f214-bea6-4cde-bb46-cf5db7eb05a8'
