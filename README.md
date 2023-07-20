@@ -1,3 +1,5 @@
+An ML project for the MLX2 Founders and Coders level 7 AI apprenticeship: recommendation system
+
 ## How to run
 
 1. Install tilt: `curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash`
