@@ -1,4 +1,2 @@
 confluent-kafka
-pg8000
-psycopg2
-json
+psycopg2-binary

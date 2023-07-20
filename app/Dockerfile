@@ -13,5 +13,8 @@ RUN pip install -r requirements.txt
 # Expose port 8080
 EXPOSE 8080
 
+# Initialise the db
+# RUN python3 sql/init_db.py
+
 # Set the entrypoint command
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]

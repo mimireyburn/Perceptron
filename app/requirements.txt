@@ -2,4 +2,4 @@ confluent-kafka
 fastapi
 uvicorn
 redis
-pg8000
+psycopg2-binary

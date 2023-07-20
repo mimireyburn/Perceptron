@@ -2,7 +2,6 @@ from fastapi import FastAPI, Request, HTTPException
 from confluent_kafka import Producer, Consumer
 import redis
 import random
-import pg8000
 import json
 from datetime import datetime
 
