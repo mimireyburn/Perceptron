@@ -1,4 +1,4 @@
-version: '2.2'
+version: '3.8'
 services: 
   db:
     image: postgres:14.1-alpine
@@ -30,7 +30,7 @@ services:
   workers:
     build: ./workers
     ports: 
-        - 8080:8080
+        - 8081:8081
     # command: python worker.py
     depends_on:
       - kafka
