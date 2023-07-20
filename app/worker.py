@@ -34,18 +34,16 @@ while True:
             print('Received message: {}'.format(msg.value().decode('utf-8')))
 
             # Here, you can add the code to process the message and insert it into the database.
-            # Since your message consists of userid and session, you'll need to adjust this according to your requirements.
             conn = psycopg2.connect(**connection_info)
             cur = conn.cursor()
 
             # Assuming the message.value() contains a JSON string like '{"userid": "abc", "session": "123"}'
-            data = json.loads(msg.value())
+            data = json.loads(msg.value().decode('utf-8'))  # decode the byte data to string
             userid = data.get('userid')
             session = data.get('session')
             datetime = data.get('datetime')
 
             # SQL Query to insert the data
-            # Adjust according to your table structure
             query = '''INSERT INTO sessions (user_id, item_key, cur_access) VALUES (%s, %s, %s);'''
             cur.execute(query, (userid, session, datetime))
 
