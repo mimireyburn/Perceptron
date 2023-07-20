@@ -7,8 +7,6 @@ from datetime import datetime
 
 app = FastAPI()
 
-
-
 @app.get('/')
 async def read_root(request: Request):
     headers = request.headers
@@ -16,18 +14,17 @@ async def read_root(request: Request):
     session = headers.get('session')
 
     r = redis.Redis(host='cache', port=6379, decode_responses=True)
-    r.zadd('recommendations:user:1', {'ee34f214-bea6-4cde-bb46-cf5db7eb05a8': 0.8, '6e7175d0-1abd-496f-a138-d447b220b8b6': 0.7, '43a2a257-dd0c-4a6a-8b2b-457b443eb1cb': 0.6, '9f60e2f8-7f11-4732-a69a-03d2ea6e2950': 0.4})
+    r.zadd('recommendations', {'ee34f214-bea6-4cde-bb46-cf5db7eb05a8': 0.8, '6e7175d0-1abd-496f-a138-d447b220b8b6': 0.7, '43a2a257-dd0c-4a6a-8b2b-457b443eb1cb': 0.6, '9f60e2f8-7f11-4732-a69a-03d2ea6e2950': 0.4})
 
 
     # Get the current datetime
     current_datetime = datetime.now().isoformat()
 
-    r.set(f"user:{session}", userid)
-    r.set(f"session:{session}", session)
-    r.set(f"datetime:{session}", current_datetime)
+    r.hset(f"{userid}", "user_id", userid)
+    r.hset(f"user:{userid}", "session_id", session)
+    r.hset(f"user:{userid}", "timestamp", current_datetime)
     
-
-    user_recommendations = r.zrange('recommendations:user:1', 0, -1, withscores=True)
+    user_recommendations = r.zrange('recommendations', 0, -1, withscores=True)
 
     selected_item, score = random.choice(user_recommendations)
 
