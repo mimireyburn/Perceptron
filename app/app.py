@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, HTTPException
 import redis
 import random
-import pg8000
+# import pg8000
 import json
 
 app = FastAPI()
