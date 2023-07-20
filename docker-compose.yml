@@ -29,6 +29,8 @@ services:
 
   workers:
     build: ./workers
+    ports: 
+        - 8080:8080
     # command: python worker.py
     depends_on:
       - kafka

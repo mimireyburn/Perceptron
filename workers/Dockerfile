@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8080
 
 # Set the entrypoint command
-CMD ["uvicorn", "workers:workers", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["uvicorn", "workers:workers", "--host", "0.0.0.0", "--port", "8081"]
