@@ -1,32 +1,16 @@
-version: '3.8'
+version: '1.0'
 services: 
-  app: 
-    build: ./app
-    ports: 
-      - 8080:8080
-    depends_on:
-      - kafka
-
-  cache:
-    image: redis:6.2-alpine
-    restart: always
-    ports:
-      - '6380:6379'
-    volumes:
-      - cache:/data
-
   db:
     image: postgres:14.1-alpine
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER="${POSTGRES_USER}"
+      - POSTGRES_PASSWORD="${POSTGRES_PASSWORD}"
     ports:
-      - '5438:5432'
+      - '5432:5432'
+      #- '5438:5432'
     volumes: 
       - db:/var/lib/postgresql/data
-      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
-
   kafka:
     image: confluentinc/cp-kafka:latest
     restart: always
@@ -49,7 +33,20 @@ services:
     depends_on:
       - kafka
       - db
-
+  app: 
+      build: ./app
+      ports: 
+        - 8080:8080
+      depends_on:
+      - db
+      - kafka
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6380:6379'
+    volumes:
+      - cache:/data
 volumes:
   cache:
     driver: local
