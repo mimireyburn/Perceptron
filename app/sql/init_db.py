@@ -27,9 +27,9 @@ def create_database(connection_info):
         connection.autocommit = True
         cursor = connection.cursor()
 
-        print(connection_info['database'])
+        print(connection_info['dbname'])
         # Create a new database
-        cursor.execute(f"CREATE DATABASE {connection_info['database']}")
+        cursor.execute(f"CREATE DATABASE {connection_info['dbname']}")
         print(f"Database  created successfully.")
 
         cursor.close()
