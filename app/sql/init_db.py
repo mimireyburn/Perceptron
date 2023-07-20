@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 
 # Load the environment variables from the .env file in the project root
-dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env')
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..', '.env')
 load_dotenv(dotenv_path)
 
 connection_info = {
