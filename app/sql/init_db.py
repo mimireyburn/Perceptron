@@ -1,7 +1,37 @@
-
-
 import psycopg2
 import json
+from datetime import datetime
+
+connection_info = {
+    "database": "W9sV6cL2dX",
+    "user": "root",
+    "password": "E5rG7tY3fH",
+    "host": "localhost",
+    "port": 5432  # or any port you have configured
+}
+
+print("hi")
+
+def create_database(connection_info):
+    try:
+        # Connect to the default PostgreSQL database (usually 'postgres')
+        print(connection_info)
+        connection = psycopg2.connect(**connection_info)
+        print("connected to db")
+        connection.autocommit = True
+        cursor = connection.cursor()
+
+        print(connection_info['database'])
+        # Create a new database
+        cursor.execute(f"CREATE DATABASE {connection_info['database']}")
+        print(f"Database  created successfully.")
+
+        cursor.close()
+        connection.close()
+    except psycopg2.Error as e:
+        print(f"Error creating database: {e}")
+
+
 
 def create_users_table(connection_info):
     conn = psycopg2.connect(**connection_info)
@@ -37,23 +67,7 @@ def create_users_table(connection_info):
     cur.close()
     conn.close()
 
-# Database connection parameters
-connection_info = {
-    "dbname": "postgres",
-    "user": "postgres",
-    "password": "Perceptron",
-    "host": "localhost",
-    "port": 5433  # or any port you have configured
-}
 
-# Creating table and inserting data
-create_users_table(connection_info)
-
-
-
-import psycopg2
-import json
-from datetime import datetime
 
 def create_items_table(connection_info):
     conn = psycopg2.connect(**connection_info)
@@ -102,14 +116,11 @@ def insert_items_data(connection_info):
     conn.close()
 
 
-# Database connection parameters
-connection_info = {
-    "dbname": "postgres",
-    "user": "postgres",
-    "password": "postgres",
-    "host": "localhost",
-    "port": 5433  # or any port you have configured
-}
+#Create db 
+create_database(connection_info)
+
+# Creating table and inserting data
+create_users_table(connection_info)
 
 # Creating table
 create_items_table(connection_info)
