@@ -1,6 +1,7 @@
 import psycopg2
 import json
 from datetime import datetime
+import os 
 
 connection_info = {
     "dbname": os.environ.get("POSTGRES_DB"),
