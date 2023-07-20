@@ -3,9 +3,9 @@ import json
 from datetime import datetime
 
 connection_info = {
-    "database": "W9sV6cL2dX",
+    "database": "tinyWorld",
     "user": "root",
-    "password": "E5rG7tY3fH",
+    "password": "postgres",
     "host": "localhost",
     "port": 5433  # or any port you have configured
 }
@@ -39,7 +39,7 @@ def create_users_table(connection_info):
 
     # Creating table
     query = '''
-    CREATE TABLE IF NOT EXISTS users(
+    CREATE TABLE IF NOT EXISTS Users(
         id INT PRIMARY KEY,
         age INT,
         country VARCHAR(255),
@@ -55,7 +55,7 @@ def create_users_table(connection_info):
     for user in users_data:
         cur.execute(
             """
-            INSERT INTO users (id, age, country, gender) VALUES (%s, %s, %s, %s)
+            INSERT INTO Users (id, age, country, gender) VALUES (%s, %s, %s, %s)
             ON CONFLICT (id) 
             DO NOTHING
             """,
@@ -75,7 +75,7 @@ def create_items_table(connection_info):
 
     # Creating table
     query = '''
-    CREATE TABLE IF NOT EXISTS items(
+    CREATE TABLE IF NOT EXISTS Items(
         bucket_key VARCHAR(255),
         created_at TIMESTAMP,
         item_key UUID PRIMARY KEY,
@@ -103,7 +103,7 @@ def insert_items_data(connection_info):
         created_at = datetime.strptime(item['created_at'], "%a, %d %b %Y %H:%M:%S %Z")
         cur.execute(
             """
-            INSERT INTO items (bucket_key, created_at, item_key, type, user_id) VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO Items (bucket_key, created_at, item_key, type, user_id) VALUES (%s, %s, %s, %s, %s)
             ON CONFLICT (item_key) 
             DO NOTHING
             """,
@@ -116,6 +116,25 @@ def insert_items_data(connection_info):
     conn.close()
 
 
+def create_sessions_table(connection_info):
+    conn = psycopg2.connect(**connection_info)
+    cur = conn.cursor()
+
+    # Creating table
+    query = '''
+    CREATE TABLE IF NOT EXISTS Sessions(
+        user_id INT,
+        item_key VARCHAR(255),
+        cur_access TIMESTAMP
+    )
+    '''
+    cur.execute(query)
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
+
 #Create db 
 create_database(connection_info)
 
@@ -125,6 +144,8 @@ create_users_table(connection_info)
 # Creating table
 create_items_table(connection_info)
 
+#creating sessions table
+create_sessions_table(connection_info)
+
 # Inserting data
 insert_items_data(connection_info)
-
