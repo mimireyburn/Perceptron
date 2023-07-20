@@ -2,10 +2,10 @@
 FROM python:3.9-slim
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /workers
 
 # Copy the application files to the container
-COPY . /app
+COPY . /workers
 
 # Install dependencies
 RUN pip install -r requirements.txt
@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8080
 
 # Set the entrypoint command
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["uvicorn", "workers:workers", "--host", "0.0.0.0", "--port", "8080"]
