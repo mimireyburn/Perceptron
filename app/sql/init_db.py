@@ -7,7 +7,7 @@ connection_info = {
     "user": "root",
     "password": "E5rG7tY3fH",
     "host": "localhost",
-    "port": 5432  # or any port you have configured
+    "port": 5433  # or any port you have configured
 }
 
 print("hi")
