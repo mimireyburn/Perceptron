@@ -1,3 +1,4 @@
 cache
 data_pg
+data_pg/*
 .env
